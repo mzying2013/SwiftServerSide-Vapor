@@ -36,11 +36,11 @@ extension LoginUser {
  
     func validation() -> (Bool,String) {
         
-        if account.isAccount().0 == true {
+        if account.isAccount().0 == false {
             return account.isAccount()
         }
         
-        if password.isPassword().0 == true {
+        if password.isPassword().0 == false {
             return account.isPassword()
         }
         

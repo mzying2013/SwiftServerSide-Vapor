@@ -66,6 +66,11 @@ extension UserRouteController {
                                                          data: access).encode(for: req)
             })
         })
+        
+        //通过req对象为此model类型创建查询对象。
+//        let query = LoginUser.query(on: req)
+//        let filter = query.filter(\.account == user.account)
+//        let first2 = filter.first()
     }
     
     //TODO: 注册

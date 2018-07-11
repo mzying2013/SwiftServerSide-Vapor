@@ -15,10 +15,10 @@ extension PostgreSQLDatabaseConfig {
         
         let database = env.isRelease ? "vaporDB":"vaporDebugDB"
         
-        var hostname = "127.0.0.1"
+        var hostname = "149.28.233.76"
         var username = "vapor"
-        var password = "vapor"
-        var port = 5432
+        var password = "Vapor_Postgres_DB"
+        var port = 4406
         
         #if os(Linux)
         let manager = FileManager.default
@@ -48,7 +48,8 @@ extension PostgreSQLDatabaseConfig {
         return PostgreSQLDatabaseConfig(hostname: hostname,
                                         port: port,
                                         username: username,
-                                        database: database)
+                                        database: database,
+                                        password:password)
     }
         
 }
