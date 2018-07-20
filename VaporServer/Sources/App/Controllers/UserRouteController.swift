@@ -106,6 +106,7 @@ extension UserRouteController {
         }
     }
     
+    //退出登录
     func exitUserHandler(_ req: Request) throws -> Future<Response> {
         
         return try req.content.decode(TokenContainer.self).flatMap({ container in
@@ -153,6 +154,7 @@ extension UserRouteController {
         })
     }
     
+    //获取用户信息
     func getUserInfoHandler(_ req: Request) throws -> Future<Response> {
         
         guard let token = req.query[String.self, at: "token"] else {
@@ -166,9 +168,13 @@ extension UserRouteController {
                 return try ResponseJSON<Empty>(status: .token).encode(for: req)
             }
             
+            print("existToken:\(existToken)")
+            
             let first = UserInfo.query(on: req).filter(\.userID == existToken.userID).first()
             
             return first.flatMap({ (existInfo) in
+                print("existInfo:\(String(describing: existInfo))")
+                
                 guard let existInfo = existInfo else {
                     return try ResponseJSON<Empty>(status: .error,
                                                   message: "用户信息为空").encode(for: req)
