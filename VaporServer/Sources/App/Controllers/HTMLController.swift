@@ -28,6 +28,8 @@ class HTMLController: RouteCollection {
             group.get("color", use: color)
             group.get("line", use: line)
             
+            group.get("ntfs",use:ntfs)
+            
         }
         
     }
@@ -37,6 +39,9 @@ class HTMLController: RouteCollection {
 
 extension HTMLController {
 
+    func ntfs(_ req:Request) throws -> Future<View> {
+        return try req.view().render("leaf/NTFS")
+    }
     
     func api(_ req: Request) throws -> Future<View> {
         

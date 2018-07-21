@@ -41,7 +41,7 @@ private extension LoginUser {
 
 extension UserRouteController {
     
-    //TODO: 登录
+    //MARK: 登录
     func loginUserHandler(_ req: Request,user: LoginUser) throws -> Future<Response> {
         
         let first = LoginUser.query(on: req).filter(\.account == user.account).first()
@@ -73,7 +73,7 @@ extension UserRouteController {
 //        let first2 = filter.first()
     }
     
-    //TODO: 注册
+    //MARK: 注册
     func registerUserHandler(_ req: Request, newUser: LoginUser) throws -> Future<Response> {
         
         let futureFirst = LoginUser.query(on: req).filter(\.account == newUser.account).first()
@@ -106,7 +106,7 @@ extension UserRouteController {
         }
     }
     
-    //退出登录
+    //MARK:退出登录
     func exitUserHandler(_ req: Request) throws -> Future<Response> {
         
         return try req.content.decode(TokenContainer.self).flatMap({ container in
@@ -124,7 +124,7 @@ extension UserRouteController {
         })
     }
     
-    //TODO: 修改密码
+    //MARK: 修改密码
     func changePasswordHandler(_ req: Request,inputContent: ChangePasswordContainer) throws -> Future<Response> {
         return LoginUser.query(on: req).filter(\.account == inputContent.account).first().flatMap({ (existUser) in
             
@@ -154,7 +154,7 @@ extension UserRouteController {
         })
     }
     
-    //获取用户信息
+    //MARK:获取用户信息
     func getUserInfoHandler(_ req: Request) throws -> Future<Response> {
         
         guard let token = req.query[String.self, at: "token"] else {
@@ -184,7 +184,7 @@ extension UserRouteController {
         })
     }
     
-    //TODO: 更新用户信息
+    //MARK: 更新用户信息
     func updateUserInfoHandler(_ req: Request,container: UserInfoContainer) throws -> Future<Response> {
         
         let bearToken = BearerAuthorization(token: container.token)
