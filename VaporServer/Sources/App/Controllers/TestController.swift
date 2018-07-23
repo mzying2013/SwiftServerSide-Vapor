@@ -8,7 +8,6 @@
 import Foundation
 import Vapor
 import Fluent
-
 import Random
 
 // 这里是测试 controller 
@@ -43,11 +42,6 @@ struct TestController: RouteCollection {
             
             group.get("myModel", use: saveMyModelHandler)
             
-//            router.get("process") { (req: Request) -> Future<String> in
-//                // asyncExecute returns a Future<Int32> where the value is the exit code of the process
-//                Process.asyncExecute("/bin/bash", ["/Users/zsolt/test.sh"], on: req) { _ in }
-//                .map { $0.description }
-//            }
         }
         
     }
@@ -57,9 +51,21 @@ struct TestController: RouteCollection {
 
 extension TestController {
     
-    func saveMyModelHandler(_ req: Request) throws -> Future<MyModel> {
+    func compactMap(_ req: Request) throws -> Future<Int> {
         
-        return MyModel(name: "4ks", count: Int(arc4random())).save(on: req).flatMap({ (model) in
+        let firstFuture = MyModel.query(on: req).first()
+        let allFuture = MyModel.query(on: req).all()
+        
+        return map(to: Int.self, firstFuture, allFuture) { (first, all) in
+            let f = first?.count ?? 0
+            let a = all.count
+            return f + a
+        }
+    }
+    
+    func saveMyModelHandler(_ req: Request) throws -> Future<MyModel> {
+        let a: Int = Int(SimpleRandom.random(1...2540))
+        return MyModel(name: "4ks", count: a).save(on: req).flatMap({ (model) in
             return req.eventLoop.newSucceededFuture(result: model)
         })
     }

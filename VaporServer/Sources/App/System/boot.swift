@@ -7,7 +7,7 @@ public func boot(_ app: Application) throws {
     
       //定时器
 //    func runRepeatTimer() {
-//        _  = app.eventLoop.scheduleTask(in: TimeAmount.seconds(3), runRepeatTimer) // 3s
+//        _  = app.eventLoop.scheduleTask(in: TimeAmount.seconds(5), runRepeatTimer) // 3s
 //        foo(on: app)
 //    }
 //    runRepeatTimer()
@@ -17,8 +17,9 @@ public func boot(_ app: Application) throws {
 
 func foo(on container: Container) {
     
+    
     let future = container.withPooledConnection(to: .psql) { db in
-        return Future.map(on: container){ "timer running" }
+        return Future.map(on: container){ "\(db) timer running" }
     }
     future.do{ msg in
         print(msg )
@@ -27,3 +28,6 @@ func foo(on container: Container) {
     }
     
 }
+
+
+
