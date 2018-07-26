@@ -20,9 +20,13 @@ struct AuthController {
     }
     
     func authContainer(for user: LoginUser,on connection: DatabaseConnectable) throws -> Future<AuthContainer> {
+        //移除所有的 token。包括 AccessToken 和 RefreshToken 两张表。
         return try removeAllTokens(for: user, on: connection).flatMap({ _ in
-            return try map(to: AuthContainer.self, self.accessToken(for: user, on: connection), self.refreshToken(for: user, on: connection), { (access, refresh) in
-                return AuthContainer(accessToken: access, refreshToken: refresh)
+            //创建 AccessToken 和 RefreshToken 记录，并通过 map 统一回调。
+            return try map(to: AuthContainer.self,
+                           self.accessToken(for: user, on: connection),
+                           self.refreshToken(for: user, on: connection), { (access, refresh) in
+                            return AuthContainer(accessToken: access, refreshToken: refresh)
             })
         })
     }
@@ -70,6 +74,6 @@ private extension AuthController {
         return try AccessToken(userID: refreshToken.userID).save(on: connection)
     }
     
- 
+    
     
 }
